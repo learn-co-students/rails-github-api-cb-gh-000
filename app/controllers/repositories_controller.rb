@@ -1,27 +1,16 @@
 class RepositoriesController < ApplicationController
+
   def index
-    resp = Faraday.get('https://api.github.com/user/repos') do |req|
-      req.headers['Authorization'] = "token #{session[:token]}"
-      req.params['sort'] = 'created'
-      req.params['page'] = params[:page] || '1'
-    end
-    @repos_list = JSON.parse(resp.body)
-    @page_link = resp.headers['link']
-    # byebug
+    github = GithubService.new(session[:token])
+    @repos_list, @page_link = github.get_repos(params[:page])
   end
 
   def create
-    resp =  Faraday.post('https://api.github.com/user/repos') do |req|
-      req.headers['Authorization'] = "token #{session[:token]}"
-      req.body = { name: params[:name]}.to_json
-    end
-    if resp.success?
-      redirect_to root_url
-    else
-      @error = JSON.parse(resp.body)
-      render :index
-    end
-
-
+    github = GithubService.new(session[:token])
+    is_error = github.create_repos(params[:name])
+    # byebug
+    # render :index if @is_error
+    flash[:error] = is_error['message'] if is_error
+    redirect_to root_url
   end
 end

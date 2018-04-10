@@ -1,25 +1,17 @@
 <div class = "container">
 
-  <%= session[:token] %>
-  <h1>Repos</h1>
-  <h3><%= session[:username] %></h3>
+  <h1><%= session[:username] %>'s Repos</h1>
+  <%= content_tag(:div, flash[:error], :id => "flash_error") if flash[:error] %>
 
-  <% @page_link.split(',').each do |link| %>
-    <a href="/?page=<%= link.scan(/(?<=page=)\d+/).first %>"><%= link.scan(/(?<=rel=")\w+/).first %></a>
+  <h3>
+    <% @page_link.split(',').each do |link| %>
+      <a href="/?page=<%= link.scan(/(?<=page=)\d+/).first %>"><%= link.scan(/(?<=rel=")\w+/).first %></a>
+    <% end %>
+  </h3>
+  <br>
+  <% @repos_list.each do |repo| %>
+    <%= repo['name'] %><br>
   <% end %>
-
-  <!-- List repositories here! -->
-  <% #@page_link %>
-  <% if @error %>
-    <%= @error['message'] %>
-  <% else %>
-    <ul>
-      <% @repos_list.each do |repo| %>
-        <li><%= repo['name'] %></li>
-      <% end %>
-    </ul>
-  <% end %>
-
 
 
   <%= form_tag("/repositories/create", method: "post") do %>
