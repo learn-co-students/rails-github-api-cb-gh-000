@@ -3,8 +3,11 @@ class RepositoriesController < ApplicationController
     resp = Faraday.get('https://api.github.com/user/repos') do |req|
       req.headers['Authorization'] = "token #{session[:token]}"
       req.params['sort'] = 'created'
+      req.params['page'] = params[:page] || '1'
     end
     @repos_list = JSON.parse(resp.body)
+    @page_link = resp.headers['link']
+    # byebug
   end
 
   def create
@@ -18,7 +21,7 @@ class RepositoriesController < ApplicationController
       @error = JSON.parse(resp.body)
       render :index
     end
-    # byebug
+
 
   end
 end

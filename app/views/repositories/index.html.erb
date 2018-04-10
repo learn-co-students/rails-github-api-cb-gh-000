@@ -1,10 +1,15 @@
 <div class = "container">
 
-  <h3><%= session[:username] %></h3>
   <%= session[:token] %>
   <h1>Repos</h1>
+  <h3><%= session[:username] %></h3>
+
+  <% @page_link.split(',').each do |link| %>
+    <a href="/?page=<%= link.scan(/(?<=page=)\d+/).first %>"><%= link.scan(/(?<=rel=")\w+/).first %></a>
+  <% end %>
 
   <!-- List repositories here! -->
+  <% #@page_link %>
   <% if @error %>
     <%= @error['message'] %>
   <% else %>

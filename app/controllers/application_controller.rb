@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
       client_id = ENV['CLIENT_ID']
       redirect_uri = CGI.escape("http://127.0.0.1:3000/auth")
       scope = CGI.escape('repo,user')
-      state =
+      state = (0...10).map { ('a'..'z').to_a[rand(26)] }.join
       github_uri = "https://github.com/login/oauth/authorize?client_id=#{client_id}&redirect_uri=#{redirect_uri}&scope=#{scope}&state=#{state}"
       redirect_to github_uri unless logged_in?
     end
