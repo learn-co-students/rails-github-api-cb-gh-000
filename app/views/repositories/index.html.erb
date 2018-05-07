@@ -1,6 +1,18 @@
 <div class = "container">
-  <h1>Repos</h1>
-  <!-- List repositories here! -->
+
+  <h1><%= session[:username] %>'s Repos</h1>
+  <%= content_tag(:div, flash[:error], :id => "flash_error") if flash[:error] %>
+
+  <h3>
+    <% @page_link.split(',').each do |link| %>
+      <a href="/?page=<%= link.scan(/(?<=page=)\d+/).first %>"><%= link.scan(/(?<=rel=")\w+/).first %></a>
+    <% end %>
+  </h3>
+  <br>
+  <% @repos_list.each do |repo| %>
+    <%= repo['name'] %><br>
+  <% end %>
+
 
   <%= form_tag("/repositories/create", method: "post") do %>
     <%= label_tag(:name, "Create a New Repo:") %>
