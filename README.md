@@ -1,4 +1,4 @@
-# Working with APIs
+aa# Working with APIs
 
 In this lab, we're going to dive into GitHub's OAuth functionality and build our
 own OAuth Rails application. Refer to [this tutorial][tutorial] and the
